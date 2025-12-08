@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Core\Constants\" />
+		<Folder Include="Core\Models\" />
+
+		<Folder Include="Data\Context\" />
+		<Folder Include="Data\Repositories\" />
+
+		<Folder Include="Services\" />
+
+		<Folder Include="UI\Assets\" />
+		<Folder Include="UI\ViewModels\" />
+		<Folder Include="UI\Views\" />
+	</ItemGroup>
+
+</Project>
