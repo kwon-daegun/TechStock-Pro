@@ -2,6 +2,9 @@
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow) ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 
+## 📸 Application Preview
+![Dashboard Screenshot](design/Dashboard.png)
+
 ## 📖 Overview
 
 **TechStock Pro** is a specialized desktop inventory solution designed for **Electronics Retailers**. Unlike generic inventory tools, this system is optimized for tracking high-value assets with complex specifications (Laptops, Smartphones, Components).
