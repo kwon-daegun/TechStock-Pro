@@ -28,4 +28,8 @@
 		<Folder Include="UI\Views\" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Resource Include="UI\Assets\**\*.*"/>
+	</ItemGroup>
+
 </Project>
