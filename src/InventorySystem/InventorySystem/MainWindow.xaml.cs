@@ -20,5 +20,19 @@ namespace InventorySystem
         {
             InitializeComponent();
         }
+
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnProducts_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnOrders_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnSuppliers_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnReports_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnSettings_Click(object sender, RoutedEventArgs e) { }
+
+        private void BtnLogout_Click(object sender, RoutedEventArgs e) { }
     }
 }
