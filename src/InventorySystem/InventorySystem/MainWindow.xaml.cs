@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using InventorySystem.Services;
+using InventorySystem.UI.Views;
 
 namespace InventorySystem
 {
@@ -19,11 +21,24 @@ namespace InventorySystem
         public MainWindow()
         {
             InitializeComponent();
+
+            if (Session.IsAdmin()) {
+                SettingsButton.Visibility = Visibility.Visible;
+            }
+            else {
+                SettingsButton.Visibility = Visibility.Collapsed;
+            }
+
+            //ActiveView.Content = new DashboardView();
         }
 
-        private void BtnDashboard_Click(object sender, RoutedEventArgs e) { }
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e) {
+            //ActiveView.Content = new DashboardView();
+        }
 
-        private void BtnProducts_Click(object sender, RoutedEventArgs e) { }
+        private void BtnProducts_Click(object sender, RoutedEventArgs e) {
+            ActiveView.Content = new ProductsView();
+        }
 
         private void BtnOrders_Click(object sender, RoutedEventArgs e) { }
 
@@ -33,6 +48,10 @@ namespace InventorySystem
 
         private void BtnSettings_Click(object sender, RoutedEventArgs e) { }
 
-        private void BtnLogout_Click(object sender, RoutedEventArgs e) { }
+        private void BtnLogout_Click(object sender, RoutedEventArgs e) {
+            LoginView login = new LoginView();
+            login.Show();
+            this.Close();
+        }
     }
 }
