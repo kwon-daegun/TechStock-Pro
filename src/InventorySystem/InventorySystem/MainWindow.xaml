@@ -94,12 +94,16 @@
 				</StackPanel>
 			
 		        <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0">
-					<RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Settings" Tag="UI/Assets/Images/Icons/settings_icon.png"
+                    <RadioButton x:Name="SettingsButton" Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Settings" Tag="UI/Assets/Images/Icons/settings_icon.png"
                             Click="BtnSettings_Click"/>
 			        <RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Log Out" Tag="UI/Assets/Images/Icons/logout_icon.png"
 							 Click="BtnLogout_Click" />
 				</StackPanel>
 			</Grid>
+		</Border>
+
+		<Border Grid.Column="1">
+			<ContentControl x:Name="ActiveView" />
 		</Border>
 	</Grid>
 </Window>
