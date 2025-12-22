@@ -12,6 +12,7 @@ namespace InventorySystem.Data {
 
             SeedProducts(context);
             SeedOrders(context);
+            SeedSuppliers(context);
         }
 
         private static void SeedProducts(InventoryDbContext context) {
@@ -87,6 +88,60 @@ namespace InventorySystem.Data {
             }
 
             context.Orders.AddRange(orders);
+            context.SaveChanges();
+        }
+
+        private static void SeedSuppliers(InventoryDbContext context) {
+            if (context.Suppliers.Any())
+                return;
+
+            var suppliers = new List<Supplier>
+            {
+                new Supplier {
+                    Name = "Redington India Ltd (Apple Auth)",
+                    ContactPerson = "Rohan Mehra",
+                    Email = "apple.orders@redington.co.in",
+                    Phone = "044-42243353",
+                    Address = "Guindy, Chennai, TN"
+                },
+                new Supplier {
+                    Name = "Samsung India Electronics",
+                    ContactPerson = "Anjali Gupta",
+                    Email = "b2b.partner@samsung.com",
+                    Phone = "1800-40-7267",
+                    Address = "DLF Cyber City, Gurugram, HR"
+                },
+                new Supplier {
+                    Name = "Mobitech Creations (OnePlus)",
+                    ContactPerson = "Karan Malhotra",
+                    Email = "distributors.south@oneplus.in",
+                    Phone = "040-23234455",
+                    Address = "Hitech City, Hyderabad, TS"
+                },
+                new Supplier {
+                    Name = "Ingram Micro (Logitech)",
+                    ContactPerson = "Suresh Nair",
+                    Email = "logitech.sales@ingrammicro.com",
+                    Phone = "022-67890123",
+                    Address = "Andheri East, Mumbai, MH"
+                },
+                new Supplier {
+                    Name = "Sony India Pvt Ltd",
+                    ContactPerson = "Vikram Oberoi",
+                    Email = "partner.connect@sony.com",
+                    Phone = "1800-103-7799",
+                    Address = "Mathura Road, New Delhi, DL"
+                },
+                new Supplier {
+                    Name = "Rashi Peripherals (Asus/Nvidia)",
+                    ContactPerson = "Sneha Roy",
+                    Email = "support@rptechindia.com",
+                    Phone = "022-40405555",
+                    Address = "Goregaon, Mumbai, MH"
+                }
+            };
+
+            context.Suppliers.AddRange(suppliers);
             context.SaveChanges();
         }
     }
