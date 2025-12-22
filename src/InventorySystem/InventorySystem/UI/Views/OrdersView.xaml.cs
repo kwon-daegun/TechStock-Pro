@@ -2,9 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using InventorySystem.Core; // For Session
 using InventorySystem.Core.Models;
+using InventorySystem.Data;
 using InventorySystem.Data.Repositories;
-using InventorySystem.UI.Views.Windows; 
+using InventorySystem.Services;
+using InventorySystem.UI.Views.Windows;
+using Microsoft.EntityFrameworkCore; // For .Include()
+
 
 namespace InventorySystem.UI.Views {
     public partial class OrdersView : UserControl {
@@ -18,6 +23,10 @@ namespace InventorySystem.UI.Views {
 
         public OrdersView() {
             InitializeComponent();
+
+            if (!Session.IsAdmin()) {
+                ColDelete.Visibility = Visibility.Collapsed;
+            }
             LoadData();
         }
 
@@ -85,6 +94,63 @@ namespace InventorySystem.UI.Views {
             if (sender is Button btn && btn.DataContext is Order selectedOrder) {
                 var detailsWin = new OrderDetailsWindow(selectedOrder);
                 detailsWin.ShowDialog();
+            }
+        }
+
+        private void BtnDeleteOrder_Click(object sender, RoutedEventArgs e) {
+            // Security - Only Admins can delete orders
+            if (!Session.IsAdmin()) {
+                MessageBox.Show("Only Administrators can delete orders.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Get order
+            if (sender is Button btn && btn.DataContext is Order selectedOrderRow) {
+                // Confirm deletion
+                var result = MessageBox.Show($"Are you sure you want to delete Order #{selectedOrderRow.Id:D5}?\n\nThis will restore the stock for all items in this order.",
+                                             "Confirm Deletion",
+                                             MessageBoxButton.YesNo,
+                                             MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes) {
+                    DeleteOrder(selectedOrderRow.Id);
+                }
+            }
+        }
+
+        private void DeleteOrder(int orderId) {
+            using (var context = new InventoryDbContext()) {
+                using (var transaction = context.Database.BeginTransaction()) {
+                    try {
+                        // Find order and it's items
+                        var orderInDb = context.Orders
+                                               .Include(o => o.OrderItems)
+                                               .FirstOrDefault(o => o.Id == orderId);
+
+                        if (orderInDb == null)
+                            return;
+
+                        // restore stock
+                        foreach (var item in orderInDb.OrderItems) {
+                            var product = context.Products.Find(item.ProductId);
+                            if (product != null) {
+                                product.Stock += item.Quantity; // Put items back
+                            }
+                        }
+
+                        // delete order
+                        context.Orders.Remove(orderInDb);
+                        context.SaveChanges();
+                        transaction.Commit();
+
+                        LoadData();
+                        MessageBox.Show("Order deleted and stock restored.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (System.Exception ex) {
+                        transaction.Rollback();
+                        MessageBox.Show($"Error deleting order: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
 
