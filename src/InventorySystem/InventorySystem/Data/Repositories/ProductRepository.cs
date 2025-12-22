@@ -58,15 +58,45 @@ namespace InventorySystem.Data.Repositories {
             return _context.Products.Count();
         }
 
-        // Skip - jumps over the previous pages. 
-        // Take - grabs the next 10 items.
-        public List<Product> GetProductsByPage(int pageNumber, int pageSize) {
+        // Get category
+        public List<string> GetCategories() {
             return _context.Products
-                           .AsNoTracking()
-                           .OrderBy(p => p.Id) // SQL needs an order to page correctly
-                           .Skip((pageNumber - 1) * pageSize)
-                           .Take(pageSize)
+                           .Select(p => p.Category)
+                           .Distinct()
+                           .OrderBy(c => c)
                            .ToList();
+        }
+
+        // Handle - Search, Filter, and Pagination
+        public (List<Product> Products, int TotalCount) GetProducts(
+            string searchTerm,
+            string category,
+            int pageNumber,
+            int pageSize) {
+            
+            var query = _context.Products.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm)) {
+                // Find products where name or brand contains the search text
+                query = query.Where(p => p.Name.Contains(searchTerm) ||
+                                         p.Brand.Contains(searchTerm));
+            }
+
+            // Apply Category Filter - if user selected one
+            if (!string.IsNullOrWhiteSpace(category) && category != "All Categories") {
+                query = query.Where(p => p.Category == category);
+            }
+
+            // If we have 1000 items but only 5 match "Samsung", this will be 5.
+            int totalCount = query.Count();
+
+            // Pagination
+            var items = query.OrderByDescending(p => p.Id)
+                             .Skip((pageNumber - 1) * pageSize)
+                             .Take(pageSize)
+                             .ToList();
+
+            return (items, totalCount);
         }
     }
 }
