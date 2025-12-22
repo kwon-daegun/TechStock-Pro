@@ -21,7 +21,7 @@ namespace InventorySystem.Core.Models
         public required decimal Price { get; set; }
 
         [Required]
-        public required string Category { get; set; }// "Mobiles", "Laptops"
+        public required string Category { get; set; } // "Mobiles", "Laptops"
 
         public string Brand { get; set; } = "Generic"; // "Infinix", "Realme"
         public int Stock { get; set; } = 0;
