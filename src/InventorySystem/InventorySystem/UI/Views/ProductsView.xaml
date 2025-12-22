@@ -8,38 +8,6 @@
              Background="#111827" FontFamily="Segoe UI">
 
     <UserControl.Resources>
-       
-        <Style x:Key="SearchBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="#1F2937"/>
-            <Setter Property="Foreground" Value="#FFF"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                            <Grid>
-                                <TextBlock x:Name="Placeholder" 
-                                           Text="🔍 Search products..." 
-                                           Foreground="#6B7280" 
-                                           Margin="15,10" 
-                                           Visibility="Hidden"/>
-
-                                <ScrollViewer x:Name="PART_ContentHost"/>
-                            </Grid>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#2563EB"/>
             <Setter Property="Foreground" Value="#FFF"/>
@@ -65,6 +33,50 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <ControlTemplate x:Key="MinimalComboBoxTemplate" TargetType="ComboBox">
+            <Grid>
+                <ToggleButton Focusable="false" 
+                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                  ClickMode="Press"
+                                  BorderThickness="0"
+                                  Background="Transparent">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border Background="Transparent">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="1" Text="▼" FontSize="10" Foreground="#9CA3AF" 
+                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+
+                <ContentPresenter IsHitTestVisible="False" 
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"
+                                      Margin="0,0,20,0"/>
+
+                <Popup x:Name="Popup" IsOpen="{TemplateBinding IsDropDownOpen}" 
+                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                    <Border x:Name="DropDownBorder" Background="#1F2937" 
+                                        BorderThickness="1" BorderBrush="#374151" 
+                                        CornerRadius="6" MinWidth="{TemplateBinding ActualWidth}">
+                        <ScrollViewer Margin="2">
+                            <StackPanel IsItemsHost="True" />
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+            </Grid>
+        </ControlTemplate>
     </UserControl.Resources>
 
     <Grid Margin="30">
@@ -78,7 +90,6 @@
         <Grid Grid.Row="0" Margin="0,0,0,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel>
@@ -86,25 +97,49 @@
                 <TextBlock Text="Manage your store catalog and stock levels" Foreground="#9CA3AF" FontSize="14" Margin="0,5,0,0"/>
             </StackPanel>
 
-            <Button Click="BtnAdd_Click" Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Content="+ Add New Product"/>
         </Grid>
 
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="215"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Style="{StaticResource SearchBoxStyle}"/>
+            <Border Grid.Column="0" Background="#1F2937" CornerRadius="8" Padding="10,5" Width="300">
+                <DockPanel>
+                    <TextBlock Text="🔍" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#9CA3AF"/>
+                    <TextBox x:Name="TxtSearch"
+                             TextChanged="TxtSearch_TextChanged"
+                             Text="Search products..." 
+                             Foreground="#9CA3AF"
+                             Background="Transparent"
+                             BorderThickness="0" 
+                             CaretBrush="#FFF"
+                             VerticalContentAlignment="Center"
+                             GotFocus="RemovePlaceholder"
+                             LostFocus="AddPlaceholder"/>
+                </DockPanel>
+            </Border>
 
-            <Border Grid.Column="2" Background="#1F2937" CornerRadius="8" Padding="15,10" Cursor="Hand">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Filter by: " Foreground="#9CA3AF"/>
-                    <TextBlock Text="All Categories" Foreground="#FFF" FontWeight="SemiBold"/>
-                    <TextBlock Text=" ▼" Foreground="#9CA3AF" FontSize="10" VerticalAlignment="Center" Margin="10,0,0,0"/>
+
+            <Border Grid.Column="1" Background="#1F2937" CornerRadius="8" Margin="10,0,0,0" Padding="10,0" Height="38">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Filter by: " Foreground="#9CA3AF" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="CmbCategories" SelectionChanged="CmbCategories_SelectionChanged" 
+                              Template="{StaticResource MinimalComboBoxTemplate}" Width="130"
+                              Foreground="#FFF" Background="Transparent" BorderThickness="0"
+                              VerticalContentAlignment="Center" FontWeight="SemiBold">
+                        <ComboBox.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1F2937"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#1F2937"/>
+                        </ComboBox.Resources>
+                    </ComboBox>
                 </StackPanel>
             </Border>
+
+            <Button HorizontalAlignment="Right" Click="BtnAdd_Click" Grid.Column="2" Style="{StaticResource PrimaryButtonStyle}" Content="+ Add New Product"/>
+
         </Grid>
 
         <Border Grid.Row="2" Background="#1F2937" CornerRadius="16" Padding="5">
@@ -119,6 +154,7 @@
                       AutoGenerateColumns="False"
                       RowHeight="70"
                       CanUserAddRows="False"
+                      CanUserSortColumns="False"
                       IsReadOnly="True"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       MouseDoubleClick="ProductsGrid_MouseDoubleClick">
