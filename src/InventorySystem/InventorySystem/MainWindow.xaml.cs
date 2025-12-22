@@ -40,7 +40,9 @@ namespace InventorySystem
             ActiveView.Content = new ProductsView();
         }
 
-        private void BtnOrders_Click(object sender, RoutedEventArgs e) { }
+        private void BtnOrders_Click(object sender, RoutedEventArgs e) {
+            ActiveView.Content = new OrdersView();
+        }
 
         private void BtnSuppliers_Click(object sender, RoutedEventArgs e) { }
 
