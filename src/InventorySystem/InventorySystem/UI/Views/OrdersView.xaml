@@ -216,6 +216,17 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn x:Name="ColDelete" Header="ACTIONS" Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="🗑" Click="BtnDeleteOrder_Click" Width="30" 
+                                        Height="30" Background="Transparent" Foreground="#EF4444"
+                                        BorderThickness="0" Cursor="Hand"
+                                        ToolTip="Delete Order And Restore Items to Stock"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
