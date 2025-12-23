@@ -21,19 +21,11 @@ namespace InventorySystem
         public MainWindow()
         {
             InitializeComponent();
-
-            if (Session.IsAdmin()) {
-                SettingsButton.Visibility = Visibility.Visible;
-            }
-            else {
-                SettingsButton.Visibility = Visibility.Collapsed;
-            }
-
-            //ActiveView.Content = new DashboardView();
+            ActiveView.Content = new ProductsView();
         }
 
         private void BtnDashboard_Click(object sender, RoutedEventArgs e) {
-            //ActiveView.Content = new DashboardView();
+            ActiveView.Content = new ComingSoonView();
         }
 
         private void BtnProducts_Click(object sender, RoutedEventArgs e) {
@@ -48,9 +40,13 @@ namespace InventorySystem
             ActiveView.Content = new SuppliersView();
         }
 
-        private void BtnReports_Click(object sender, RoutedEventArgs e) { }
+        private void BtnReports_Click(object sender, RoutedEventArgs e) {
+            ActiveView.Content = new ComingSoonView();
+        }
 
-        private void BtnSettings_Click(object sender, RoutedEventArgs e) { }
+        private void BtnSettings_Click(object sender, RoutedEventArgs e) {
+            ActiveView.Content = new SettingsView();
+        }
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e) {
             LoginView login = new LoginView();
