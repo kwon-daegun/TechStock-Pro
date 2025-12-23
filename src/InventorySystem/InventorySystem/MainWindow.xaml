@@ -82,9 +82,9 @@
 
 				<StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="0,10">
 					<RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Dashboard" Tag="UI/Assets/Images/Icons/dashboard_icon.png"
-                            Click="BtnDashboard_Click" IsChecked="True"/>
+                            Click="BtnDashboard_Click"/>
 			        <RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Products" Tag="UI/Assets/Images/Icons/products_icon.png"
-							 Click="BtnProducts_Click" />
+							 Click="BtnProducts_Click" IsChecked="True"/>
 			        <RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Orders" Tag="UI/Assets/Images/Icons/orders_icon.png"
 							 Click="BtnOrders_Click" />
 			        <RadioButton Style="{StaticResource MenuButtonStyle}" GroupName="Menu" Content="Suppliers" Tag="UI/Assets/Images/Icons/suppliers_icon.png"
