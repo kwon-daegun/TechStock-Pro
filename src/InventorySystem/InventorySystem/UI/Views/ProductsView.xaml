@@ -228,10 +228,7 @@
                                         <TextBlock Text=" items" Foreground="#6B7280" FontSize="11" Margin="5,2,0,0"/>
                                     </StackPanel>
                                     <ProgressBar Value="{Binding Stock}" Maximum="100" Height="4" BorderThickness="0"
-                                                 Background="#374151">
-                                        <ProgressBar.Foreground>
-                                            <SolidColorBrush Color="{Binding StockLevelClr}"/>
-                                        </ProgressBar.Foreground>
+                                                 Background="#374151" Foreground="{Binding StockLevelClr}">
                                     </ProgressBar>
                                 </StackPanel>
                             </DataTemplate>
