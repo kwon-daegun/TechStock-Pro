@@ -1,0 +1,205 @@
+﻿<UserControl x:Class="InventorySystem.UI.Views.SuppliersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             Background="#111827" FontFamily="Segoe UI">
+
+    <UserControl.Resources>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="#FFF"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#2563EB" BlurRadius="15" Opacity="0.4" ShadowDepth="0"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1D4ED8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,30">
+            <StackPanel>
+                <TextBlock Text="Suppliers" FontSize="28" FontWeight="Bold" Foreground="#FFF"/>
+                <TextBlock Text="Manage your vendor relationships" FontSize="14" Foreground="#9CA3AF" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="#1F2937" CornerRadius="8" Padding="10,5" Width="300">
+                <DockPanel>
+                    <TextBlock Text="🔍" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#9CA3AF"/>
+                    <TextBox x:Name="TxtSearch"
+                     Text="Search suppliers..." 
+                     TextChanged="TxtSearch_TextChanged"
+                     Foreground="#9CA3AF"
+                     Background="Transparent"
+                     BorderThickness="0" 
+                     CaretBrush="#FFF"
+                     VerticalContentAlignment="Center"
+                     GotFocus="RemovePlaceholder"
+                     LostFocus="AddPlaceholder"/>
+                </DockPanel>
+            </Border>
+
+            <Button Grid.Column="3" Content="+ Add Supplier" Click="BtnAddSupplier_Click"
+                    Style="{StaticResource PrimaryButtonStyle}" Height="40" Padding="20,0"
+                    Background="#2563EB" Foreground="#fff" FontWeight="SemiBold"
+                    BorderThickness="0" Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="6"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+
+        <Border Grid.Row="2" Background="#1F2937" CornerRadius="16" Padding="5">
+            <DataGrid x:Name="SuppliersGrid"
+                      Background="Transparent" BorderThickness="0" RowBackground="Transparent"
+                      Foreground="#FFF" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#374151"
+                      HeadersVisibility="Column" AutoGenerateColumns="False" RowHeight="60"
+                      CanUserAddRows="False" CanUserSortColumns="False" CanUserResizeColumns="False" 
+                      IsReadOnly="True" SelectionMode="Single"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="#9CA3AF"/>
+                        <Setter Property="Padding" Value="15"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#374151"/>
+                    </Style>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border BorderThickness="0" Background="Transparent">
+                                        <ContentPresenter VerticalAlignment="Center" Margin="15,0"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#374151"/>
+                                <Setter Property="Foreground" Value="#FFF"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#374151"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Supplier ID" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Id, StringFormat='#{0:D5}'}" IsReadOnly="True" 
+                                         Background="Transparent" Foreground="#fff" BorderThickness="0" 
+                                         FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center" 
+                                         Cursor="IBeam"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="COMPANY" Binding="{Binding Name}" Width="*" FontWeight="Bold"/>
+
+                    <DataGridTextColumn Header="CONTACT" Binding="{Binding ContactPerson}" Width="150" Foreground="#D1D5DB"/>
+
+                    <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="200" Foreground="#60A5FA"/>
+
+                    <DataGridTextColumn Header="PHONE" Binding="{Binding Phone}" Width="150"/>
+
+                    <DataGridTemplateColumn Header="ACTIONS" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="✎" Width="30" Height="30" Background="Transparent" 
+                                        Foreground="#FBBF24" BorderThickness="0" Cursor="Hand"
+                                        Click="BtnEdit_Click"/>
+
+                                    <Button Content="🗑" Width="30" Height="30" Background="Transparent" 
+                                        Foreground="#EF4444" BorderThickness="0" Cursor="Hand" Margin="5,0,0,0"
+                                        Click="BtnDelete_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Border Grid.Row="3" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,25,0,5">
+                <TextBlock Text="Showing 1-10 of 50" VerticalAlignment="Center" Foreground="Gray" 
+                       Margin="0,0,20,0" x:Name="TxtPageInfo"/>
+                <Button x:Name="BtnPrevious" Content="&lt;" Width="30" Height="30" Click="BtnPrevious_Click" 
+                    Background="#1F2937" Foreground="#FFF" BorderThickness="0" Margin="2">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Border Background="#3B82F6" CornerRadius="4" Width="30" Height="30" Margin="2">
+                    <TextBlock x:Name="TxtCurrentPage" Text="1" Foreground="#FFF" HorizontalAlignment="Center"
+                           VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Button x:Name="BtnNext" Content="&gt;" Width="30" Height="30" Click="BtnNext_Click" 
+                    Background="#1F2937" Foreground="#FFF" BorderThickness="0" Margin="2">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
