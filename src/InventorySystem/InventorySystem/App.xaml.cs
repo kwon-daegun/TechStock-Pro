@@ -30,7 +30,7 @@ namespace InventorySystem {
                 DatabaseSeeder.Seed(context);
             }
 
-            var loginWindow = new MainWindow(); // TODO: change later to loginview
+            var loginWindow = new LoginView();
             loginWindow.Show();
         }
     }
