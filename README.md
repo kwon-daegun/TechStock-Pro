@@ -3,6 +3,7 @@
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow) ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 
 ## 📸 Application Preview
+
 ![Dashboard Screenshot](design/Dashboard.png)
 
 ## 📖 Overview
@@ -46,19 +47,17 @@ This project is being built in sprints. Current status:
   - [x] Database schema design and normalization.
   - [x] Git repository initialization.
 
-- [ ] **Phase 2: Core Functionality (Current Focus)**
+- [x] **Phase 2: Core Functionality (Current Focus)**
 
-  - [ ] Implementation of Entity Framework Core DbContext.
-  - [ ] Creation of Repositories and Services.
-  - [ ] Product CRUD logic implementation.
-  - [ ] Search & Filter by Brand/Spec.
+  - [x] Implementation of Entity Framework Core DbContext.
+  - [x] Creation of Repositories and Services.
+  - [x] Product CRUD logic implementation.
+  - [x] Search & Filter by Brand/Spec.
 
-- [ ] **Phase 3: UI & Integration**
+- [x] **Phase 3: UI & Integration**
 
-  - [ ] Dashboard UI design.
-  - [ ] Data binding and event handling.
-  - [ ] Testing and Bug fixes.
-  - [ ] Modern Dark Mode Layout Design.
+  - [x] Data binding and event handling.
+  - [x] Modern Dark Mode Layout Design.
 
 ## 📂 Project Structure
 
